@@ -6,7 +6,7 @@ public class Feature {
 		System.out.println("f1 feature");
 	}
 	public static void main(String[] args) {
-
+		System.out.println("main");
 	
 	}
 
