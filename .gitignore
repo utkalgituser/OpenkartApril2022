@@ -16,6 +16,7 @@ application.log
 *.nar
 hs_err_pid*
 activityLog.log
+,_files
 ##############################
 ## Maven
 ##############################
