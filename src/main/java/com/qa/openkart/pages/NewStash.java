@@ -6,6 +6,7 @@ public class NewStash {
 
 		String name = "my account";
 		int j = 10;
+		String name="neel";
 
 	}
 
