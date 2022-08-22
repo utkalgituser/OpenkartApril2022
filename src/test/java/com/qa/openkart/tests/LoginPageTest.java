@@ -32,8 +32,8 @@ public class LoginPageTest extends BaseTest {
 	public void loginPageUrlTest() {
 		String actUrl = loginPage.getLoginPageUrl();
 		System.out.println("actUrl is ***********  "+actUrl);
-		// Assert.assertEquals(actUrl.contains(AppConstants.LOGIN_PAGE_URL_FRACTION), true);
-		Assert.assertEquals(actUrl.contains(AppConstants.LOGIN_PAGE_URL_FRACTION), false);
+		Assert.assertEquals(actUrl.contains(AppConstants.LOGIN_PAGE_URL_FRACTION), true);
+		// Assert.assertEquals(actUrl.contains(AppConstants.LOGIN_PAGE_URL_FRACTION), false);
 	}
 
 	@Test
