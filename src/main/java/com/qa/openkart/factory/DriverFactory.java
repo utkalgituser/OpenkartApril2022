@@ -42,7 +42,7 @@ public class DriverFactory {
 	public WebDriver initDriver(Properties prop2) {
 		String browserName = prop2.getProperty("browser");
 		System.out.println("Browser name is " + browserName);
-		
+		System.out.println("Browser name is %%%%%%% "+System.getenv("browserName")+" %%%%%%%%%%%%%%%%%%%");
 		// If the browserName is set at run time then use it
 		if(Objects.nonNull(System.getenv("browserName")) ) {
 			browserName=System.getenv("browserName");
