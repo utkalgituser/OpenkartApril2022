@@ -50,11 +50,9 @@ public class DriverFactory {
 		optionsManager = new OptionsManager(prop);
 		if (browserName.equalsIgnoreCase("chrome")) {
 			WebDriverManager.chromedriver().setup();
-			// driver = new ChromeDriver(optionsManager.getChromeOptions());
 			tlDriver.set(new ChromeDriver(optionsManager.getChromeOptions()));
 		} else if (browserName.equalsIgnoreCase("edge")) {
 			WebDriverManager.edgedriver().setup();
-			// driver = new EdgeDriver();
 			tlDriver.set(new EdgeDriver(optionsManager.getEdgeOptions()));
 		} else if (browserName.equalsIgnoreCase("firefox")) {
 			WebDriverManager.firefoxdriver().setup();
