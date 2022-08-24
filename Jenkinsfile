@@ -26,7 +26,6 @@ pipeline
         }
         
         
-        
         stage("Deploy to QA"){
             steps{
                 echo("deploy to qa")
@@ -38,12 +37,11 @@ pipeline
                 catchError(buildResult: 'SUCCESS', stageResult: 'FAILURE') {
                     git 'https://github.com/naveenanimation20/Apr2022POMSeries.git'
                     sh "mvn clean install"
-                    
                 }
             }
         }
-                
-     
+
+
         stage('Publish Allure Reports') {
            steps {
                 script {
