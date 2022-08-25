@@ -35,7 +35,7 @@ pipeline
         stage('Regression Automation Test') {
             steps {
                 catchError(buildResult: 'SUCCESS', stageResult: 'FAILURE') {
-                    git 'https://github.com/naveenanimation20/Apr2022POMSeries.git'
+                    git 'https://github.com/utkalgituser/OpenkartApril2022.git'
                     sh "mvn clean install"
                 }
             }
