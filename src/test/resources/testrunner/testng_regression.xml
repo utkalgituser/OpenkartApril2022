@@ -13,19 +13,33 @@
 			class-name="com.qa.openkart.listeners.AnnotationTransformer" />
 	</listeners>
 
-	<test name="Login Page Test">
+	<test name="Login Page Test_90">
+	<parameter name="browser" value="chrome" />
+	<parameter name="browserversion" value="90.0" />
+		<classes>
+			<class name="com.qa.openkart.tests.LoginPageTest" />
+		</classes>
+	</test>
+
+	<test name="Login Page Test_100">
+	<parameter name="browser" value="chrome" />
+	<parameter name="browserversion" value="100.0" />
 		<classes>
 			<class name="com.qa.openkart.tests.LoginPageTest" />
 		</classes>
 	</test>
 
 	<test name="Account Page Test">
+	<parameter name="browser" value="firefox" />
+	<parameter name="browserversion" value="92.0" />
 		<classes>
 			<class name="com.qa.openkart.tests.AccountPageTest" />
 		</classes>
 	</test>
 
 	<test name="Product Search Test">
+	<parameter name="browser" value="firefox" />
+	<parameter name="browserversion" value="83.0" />
 		<classes>
 			<class name="com.qa.openkart.tests.ProductSearchTest" />
 		</classes>

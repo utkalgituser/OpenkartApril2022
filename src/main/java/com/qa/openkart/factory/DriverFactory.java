@@ -4,17 +4,21 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.net.MalformedURLException;
+import java.net.URL;
 import java.time.Duration;
 import java.util.Objects;
 import java.util.Properties;
 
 import org.apache.commons.io.FileUtils;
+import org.apache.log4j.Logger;
 import org.openqa.selenium.OutputType;
 import org.openqa.selenium.TakesScreenshot;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.edge.EdgeDriver;
 import org.openqa.selenium.firefox.FirefoxDriver;
+import org.openqa.selenium.remote.RemoteWebDriver;
 
 import com.qa.openkart.constants.AppConstants;
 
@@ -31,7 +35,9 @@ public class DriverFactory {
 	public OptionsManager optionsManager;
 
 	public static ThreadLocal<WebDriver> tlDriver = new ThreadLocal<>();
-
+	
+	public static Logger log=Logger.getLogger(DriverFactory.class);
+	
 	/**
 	 * This method used to initialize the driver on the basis of given browserName.
 	 *
@@ -41,23 +47,43 @@ public class DriverFactory {
 	 */
 	public WebDriver initDriver(Properties prop2) {
 		String browserName = prop2.getProperty("browser");
-		System.out.println("Browser name is " + browserName);
-		System.out.println("Browser name is %%%%%%% "+System.getenv("browserName")+" %%%%%%%%%%%%%%%%%%%");
+		log.info("Browser name is " + browserName);
+		// System.out.println("Browser name is %%%%%%% "+System.getenv("browserName")+" %%%%%%%%%%%%%%%%%%%");
+		
 		// If the browserName is set at run time then use it
-		if(Objects.nonNull(System.getenv("browserName")) ) {
-			browserName=System.getenv("browserName");
-		}
-		optionsManager = new OptionsManager(prop);
+		/*
+		 * if(Objects.nonNull(System.getenv("browserName")) ) {
+		 * browserName=System.getenv("browserName"); }
+		 */
+		
+		optionsManager = new OptionsManager(prop2);
 		if (browserName.equalsIgnoreCase("chrome")) {
-			WebDriverManager.chromedriver().setup();
-			tlDriver.set(new ChromeDriver(optionsManager.getChromeOptions()));
+			log.info("Running test on chrome");
+			if (Boolean.parseBoolean(prop2.getProperty("remote"))) {
+				init_remoteWebDriver("chrome");
+			} else {
+				log.info("Running test oin local env.");
+				WebDriverManager.chromedriver().setup();
+				tlDriver.set(new ChromeDriver(optionsManager.getChromeOptions()));
+			}
+
 		} else if (browserName.equalsIgnoreCase("edge")) {
-			WebDriverManager.edgedriver().setup();
-			tlDriver.set(new EdgeDriver(optionsManager.getEdgeOptions()));
+			if (Boolean.parseBoolean(prop2.getProperty("remote"))) {
+				init_remoteWebDriver("edge");
+			} else {
+				WebDriverManager.edgedriver().setup();
+				tlDriver.set(new EdgeDriver(optionsManager.getEdgeOptions()));
+			}
+
 		} else if (browserName.equalsIgnoreCase("firefox")) {
-			WebDriverManager.firefoxdriver().setup();
-			tlDriver.set(new FirefoxDriver(optionsManager.getFirefoxOptions()));
+			if (Boolean.parseBoolean(prop2.getProperty("remote"))) {
+				init_remoteWebDriver("firefox");
+			} else {
+				WebDriverManager.firefoxdriver().setup();
+				tlDriver.set(new FirefoxDriver(optionsManager.getFirefoxOptions()));
+			}
 		} else {
+			log.error("please pass correct driver name");
 			System.out.println("please pass correct driver name");
 		}
 		getDriver().manage().timeouts().pageLoadTimeout(Duration.ofSeconds(AppConstants.MEDIUM_DEFAULT_TIMEOUT));
@@ -66,6 +92,38 @@ public class DriverFactory {
 		getDriver().get(prop2.getProperty("url"));
 		System.out.println("returning getDriver " + getDriver());
 		return getDriver();
+	}
+	
+	/**
+	 * init remote webdriver on the basis of browser name 
+	 *
+	 * @author Utkal Barik
+	 * @param string
+	 *
+	 */
+	private void init_remoteWebDriver(String browserName) {
+		System.out.println("Running on GRID ++++++++++++++++++");
+		if (browserName.equalsIgnoreCase("chrome")) {
+			try {
+				tlDriver.set(
+						new RemoteWebDriver(new URL(prop.getProperty("huburl")), optionsManager.getChromeOptions()));
+			} catch (MalformedURLException e) {
+				e.printStackTrace();
+			}
+		} else if (browserName.equalsIgnoreCase("firefox")) {
+			try {
+				tlDriver.set(
+						new RemoteWebDriver(new URL(prop.getProperty("huburl")), optionsManager.getFirefoxOptions()));
+			} catch (MalformedURLException e) {
+				e.printStackTrace();
+			}
+		} else if (browserName.equalsIgnoreCase("edge")) {
+			try {
+				tlDriver.set(new RemoteWebDriver(new URL(prop.getProperty("huburl")), optionsManager.getEdgeOptions()));
+			} catch (MalformedURLException e) {
+				e.printStackTrace();
+			}
+		}
 	}
 
 	public static synchronized WebDriver getDriver() {

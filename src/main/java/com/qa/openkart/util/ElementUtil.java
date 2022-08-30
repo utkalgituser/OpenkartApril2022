@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.NoSuchElementException;
 
+import org.apache.log4j.Logger;
 import org.openqa.selenium.Alert;
 import org.openqa.selenium.By;
 import org.openqa.selenium.JavascriptExecutor;
@@ -21,6 +22,8 @@ import org.openqa.selenium.support.ui.WebDriverWait;
 import com.google.common.util.concurrent.Uninterruptibles;
 
 public class ElementUtil {
+
+	public static Logger log=Logger.getLogger(ElementUtil.class);
 
 	private WebDriver driver;
 	private Actions act;

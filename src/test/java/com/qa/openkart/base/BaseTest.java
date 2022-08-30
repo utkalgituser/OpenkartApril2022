@@ -1,10 +1,12 @@
 package com.qa.openkart.base;
 
+import java.util.Objects;
 import java.util.Properties;
 
 import org.openqa.selenium.WebDriver;
 import org.testng.annotations.AfterTest;
 import org.testng.annotations.BeforeTest;
+import org.testng.annotations.Parameters;
 import org.testng.asserts.SoftAssert;
 
 import com.qa.openkart.factory.DriverFactory;
@@ -29,12 +31,18 @@ public class BaseTest {
 	public RegisterPage registerPage;
 	
 	public SoftAssert softAssert;
-
+	
+	@Parameters({"browser", "browserversion"})
 	@BeforeTest
-	public void setup() {
+	public void setup(String browserName, String browserVersion) {
 		df = new DriverFactory();
 		
 		prop = df.initProp();
+		
+		if (Objects.nonNull(browserName)) {
+			prop.setProperty("browser", browserName);
+			prop.setProperty("browserversion", browserVersion);
+		}
 		// initDriver returns a copy of threadlocal driver
 		// Used every where in the framework
 		driver = df.initDriver(prop);
