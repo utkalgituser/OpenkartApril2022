@@ -35,6 +35,9 @@ public class OptionsManager {
 		if (Boolean.parseBoolean(prop.getProperty("remote"))) {
 			co.setCapability("enableVNC", true);
 			co.setBrowserVersion(prop.getProperty("browserversion"));
+			
+			co.setCapability("selenoid:options", setSeleniodCapability());
+			
 			/* // Selenium grid properties disabled for Selenoid 
 			 * co.setCapability("se:screenResolution", "1920x1080");
 			 * co.setPlatformName("linux");
@@ -55,7 +58,9 @@ public class OptionsManager {
 		if (Boolean.parseBoolean(prop.getProperty("remote"))) {
 			fo.setCapability("enableVNC", true);
 			fo.setBrowserVersion(prop.getProperty("browserversion"));
-			Map<String, Object> selenoidOption=new HashMap<>();
+			
+			fo.setCapability("selenoid:options", setSeleniodCapability());
+
 			/* // Selenium grid  properties disabled for Selenoid 
 			 * fo.setCapability("se:screenResolution", "1920x1080");
 			 * fo.setPlatformName("linux");
@@ -80,5 +85,20 @@ public class OptionsManager {
 			eo.setPlatformName("linux");
 		}
 		return eo;
+	}
+	
+	/**
+	 * 
+	 *
+	 * @author Utkal Barik
+	 * @return
+	 *
+	 */
+	private Map<String, Object> setSeleniodCapability() {
+		Map<String, Object> selenoidOptions = new HashMap<>();
+		selenoidOptions.put("screenResolution", "1280x1024x24");
+		selenoidOptions.put("enableVNC", true);
+		selenoidOptions.put("name", prop.getProperty("testname"));
+		return selenoidOptions;
 	}
 }
