@@ -1,5 +1,7 @@
 package com.qa.openkart.factory;
 
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Properties;
 
 import org.apache.log4j.Logger;
@@ -33,7 +35,7 @@ public class OptionsManager {
 		if (Boolean.parseBoolean(prop.getProperty("remote"))) {
 			co.setCapability("enableVNC", true);
 			co.setBrowserVersion(prop.getProperty("browserversion"));
-			/* // Docker properties disabled for Selenoid 
+			/* // Selenium grid properties disabled for Selenoid 
 			 * co.setCapability("se:screenResolution", "1920x1080");
 			 * co.setPlatformName("linux");
 			 */
@@ -53,7 +55,8 @@ public class OptionsManager {
 		if (Boolean.parseBoolean(prop.getProperty("remote"))) {
 			fo.setCapability("enableVNC", true);
 			fo.setBrowserVersion(prop.getProperty("browserversion"));
-			/* // Docker properties disabled for Selenoid 
+			Map<String, Object> selenoidOption=new HashMap<>();
+			/* // Selenium grid  properties disabled for Selenoid 
 			 * fo.setCapability("se:screenResolution", "1920x1080");
 			 * fo.setPlatformName("linux");
 			 */

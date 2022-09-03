@@ -4,6 +4,7 @@ import java.util.Objects;
 import java.util.Properties;
 
 import org.openqa.selenium.WebDriver;
+import org.testng.ITestContext;
 import org.testng.annotations.AfterTest;
 import org.testng.annotations.BeforeTest;
 import org.testng.annotations.Parameters;
@@ -34,7 +35,7 @@ public class BaseTest {
 	
 	@Parameters({"browser", "browserversion"})
 	@BeforeTest
-	public void setup(String browserName, String browserVersion) {
+	public void setup(String browserName, String browserVersion, ITestContext testContext) {
 		df = new DriverFactory();
 		
 		prop = df.initProp();
@@ -42,6 +43,7 @@ public class BaseTest {
 		if (Objects.nonNull(browserName)) {
 			prop.setProperty("browser", browserName);
 			prop.setProperty("browserversion", browserVersion);
+			prop.setProperty("testname", testContext.getName());
 		}
 		// initDriver returns a copy of threadlocal driver
 		// Used every where in the framework
